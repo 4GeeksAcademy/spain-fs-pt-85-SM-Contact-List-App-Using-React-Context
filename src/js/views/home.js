@@ -1,15 +1,37 @@
-import React from "react";
-import rigoImage from "../../img/rigo-baby.jpg";
+import React, { useState, useEffect } from "react";
 import "../../styles/home.css";
+import CardComponent from "../component/card-component.jsx";
 
-export const Home = () => (
-	<div className="text-center mt-5">
-		<h1>Hello Rigo!</h1>
-		<p>
-			<img src={rigoImage} />
-		</p>
-		<a href="#" className="btn btn-success">
-			If you see this green button, bootstrap is working
-		</a>
-	</div>
-);
+
+
+
+const Home = () => {
+	const [cardInfo, setCardInfo] = useState([{
+		profilePicture:"https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/02/28/16460502314689.jpg",
+		name: "Paco",
+		direction:"una dirección",
+		contactNumber:"666666666",
+		contactEmail:"paco@gmail.com"
+	 }]);
+
+
+		const cardInfoGenerator = cardInfo.map((contact, index) =>{
+			return	<CardComponent 
+			key={index}
+			profilePicture={contact.profilePicture}
+			name={contact.name}
+			direction={contact.direction}
+			contactNumber={contact.contactNumber}
+			contactEmail={contact.contactEmail}
+			/>
+		});
+
+ 
+
+	return (
+		<div>
+			{cardInfoGenerator}
+		</div>
+	);}
+
+export {Home}
