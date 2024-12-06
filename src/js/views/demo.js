@@ -5,15 +5,41 @@ import { Context } from "../store/appContext";
 
 import "../../styles/demo.css";
 
+
 export const Demo = () => {
 	// const { store, actions } = useContext(Context);
 
 	return (
-		<div className="mx-auto">
-			<h1>Add a new contact</h1>
+		<div className="col-lg-8 col-11 mx-auto">
+			<h1 className="d-flex justify-content-center">Add a new contact</h1>
+
+			<form >
+				<div className="mb-3">
+					<label htmlFor="fullName" className="form-label">Full Name</label>
+					<input type="password" className="form-control" id="fullName" placeholder="Full Name" required />
+				</div>
+				<div className="mb-3">
+					<label htmlFor="inputEmail" className="form-label">Email</label>
+					<input type="email" className="form-control" id="inputEmail" placeholder="Email" required />
+				</div>
+				<div className="mb-3">
+					<label htmlFor="phoneAdress" className="form-label">Phone</label>
+					<input type="number" className="form-control" id="phoneAdress" placeholder="Phone" required />
+				</div>
+				<div className="mb-3">
+					<label htmlFor="adress" className="form-label">Adress</label>
+					<input type="text" className="form-control" id="adress" placeholder="Adress" required />
+				</div>
+				<button type="submit" className="btn btn-primary w-100">Save</button>
+			</form>
+
+
+
+
+
 			<Link to="/">
-		 		<button className="btn btn-primary">Back home</button>
-		 	</Link>
+				<span className="mt-3 link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">or get me back to contacts</span>
+			</Link>
 		</div>
 		// <div className="container">
 		// 	<ul className="list-group">

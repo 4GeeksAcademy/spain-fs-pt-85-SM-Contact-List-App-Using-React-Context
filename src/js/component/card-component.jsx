@@ -4,7 +4,7 @@ import "../../styles/home.css";
 
 const CardComponent = (props) => {
     return (
-        <div className="mb-3 d-flex justify-content-center" key={props.key}>
+        <div className="mb-3 d-flex justify-content-center" >
             <div className="col-lg-5 d-flex justify-content-center border">
                 <div className="my-3 col-md-3 d-flex justify-content-center align-items-center">
                     <img src={props.profilePicture} className="img-fluid rounded-circle ratio ratio-1x1 limits object-fit-cover" alt={props.name}/>
