@@ -7,7 +7,7 @@ function NotFound() {
         <div className="mx-auto text-center">
             <h1>404 <br></br> Not Found</h1>
             <img src="cat-in-tower.jpg" alt="404 Not Found" />
-            <h5 className="mt-3">Not even our best employee has been able to find what you were looking for</h5>
+            <h5 className="mt-3">We got the intern to look everywhere, but what you were looking for is nowhere to be found</h5>
 
             <Link to={"/"}>
             <button className="btn btn-primary">Take me home</button>
