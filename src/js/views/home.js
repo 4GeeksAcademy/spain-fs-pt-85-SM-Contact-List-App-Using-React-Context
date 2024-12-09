@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../../styles/home.css";
 import CardComponent from "../component/card-component.jsx";
-
+import { Context } from "../store/appContext.js";
 
 //TODO, la página no es responsiva, al final de lg, y en md se salen los botones de la derecha, la imágen no es cuadrada en md y sm
 
@@ -34,6 +34,8 @@ import CardComponent from "../component/card-component.jsx";
 
 
 const Home = () => {
+	const {store, actions} = useContext(Context);
+	const contactDetails = store.contacts;
 	const [cardInfo, setCardInfo] = useState([{
 		profilePicture:"https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/02/28/16460502314689.jpg",
 		name: "Paco",
@@ -42,19 +44,21 @@ const Home = () => {
 		contactEmail:"paco@gmail.com"
 	 }]);
 
+	// console.log(actions.logginViaApi(store.loggedUser));
+	
+	const cardInfoGenerator = contactDetails.map((contact, index) =>{
+		return	<CardComponent 
+		key={index}
+		profilePicture={contact.profilePicture}
+		name={contact.name}
+		direction={contact.direction}
+		contactNumber={contact.contactNumber}
+		contactEmail={contact.contactEmail}
+		/>
+	});
 
-		const cardInfoGenerator = cardInfo.map((contact, index) =>{
-			return	<CardComponent 
-			key={index}
-			profilePicture={contact.profilePicture}
-			name={contact.name}
-			direction={contact.direction}
-			contactNumber={contact.contactNumber}
-			contactEmail={contact.contactEmail}
-			/>
-		});
-
- 
+		
+		
 
 	return (
 		<div>

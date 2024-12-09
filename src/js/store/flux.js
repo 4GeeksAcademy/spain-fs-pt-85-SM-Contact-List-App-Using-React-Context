@@ -1,43 +1,38 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			loggedUser: "SMM",
+			contacts: [{
+				profilePicture:"https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/02/28/16460502314689.jpg",
+				name: "Paco Martinez",
+				direction:"otra dirección",
+				contactNumber:"999999999",
+				contactEmail:"pacoM@gmail.com"
+			 }]
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			}
+			logginViaApi: async function logginViaApi(userToLoggin) {
+				if (userToLoggin){
+				try {
+					let response = await fetch(`https://playground.4geeks.com/contact/agendas/${userToLoggin}/contacts`,{
+						method: "GET",
+					})
+					if (response.statusText === "Not Found") {
+						alert(`User ${userToLoggin} not found in our data base, please register the user first.`);
+						setLogginUser("");
+					}
+					if (response.status === 200) alert(`Welcome ${userToLoggin}!`)
+					
+					console.log(response);
+					let data = await response.json();
+					console.log(data);
+					return;
+					
+				} catch (error) {
+					console.log(error);
+					return;
+				}
+			}}
 		}
 	};
 };

@@ -1,13 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 
-// TODO HACER QUE NAVBAR DESAPAREZCA CUANDO SE ESTÁ EN CUALQUIER PÁGINA QUE NO SEA HOME
+// TODO HACER QUE NAVBAR DESAPAREZCA CUANDO SE ESTÁ EN CUALQUIER PÁGINA QUE NO SEA HOME, se debe modificar el return de la función logginViaApi para que devuelva información
+// la cual podrá ser tratada por home para generar los contactos
+
+
+// función para la obtención de la información del usuario a través de la api
+// const logginViaApi = async (userToLoggin) => {
+// 	if (userToLoggin){
+// 	try {
+// 		let response = await fetch(`https://playground.4geeks.com/contact/agendas/${userToLoggin}/contacts`,{
+// 			method: "GET",
+// 		})
+// 		if (response.statusText === "Not Found") {
+// 			alert(`User ${userToLoggin} not found in our data base, please register the user first.`);
+// 			setLogginUser("");
+// 		}
+// 		if (response.status === 200) alert(`Welcome ${userToLoggin}!`)
+		
+// 		console.log(response);
+// 		let data = await response.json();
+// 		console.log(data);
+// 		return;
+		
+// 	} catch (error) {
+// 		console.log(error);
+// 		return;
+// 	}
+// }}
+
 
 const Navbar = () => {
+	// degradación de objeto context
+	const {store, actions} = useContext(Context)
 	// hook para los valores de los input
 	const [inputValue, setInputValue] = useState("");
 	// hook para el valor del nuevo usuario a crear
 	const [logginUser, setLogginUser] = useState("");
+
+	
+	async function test(){
+		console.log(`123 ${actions.logginViaApi(store.loggedUser)}`);
+	}
 
 	// función para la actualización del valor del input en pantalla
 	function inputUpdaterHandler(e){
@@ -48,33 +83,11 @@ const Navbar = () => {
 	}
 
 	// función para llamar la función que llamará al valor almacenado en logginUser a través de la API
-	useEffect(() =>{
-		logginViaApi(logginUser)
-	}, [logginUser])
+	// useEffect(() =>{
+	// 	logginViaApi(logginUser)
+	// }, [logginUser])
 
-	// función para la obtención de la información del usuario a través de la api
-	const logginViaApi = async (userToLoggin) => {
-		if (userToLoggin){
-		try {
-			let response = await fetch(`https://playground.4geeks.com/contact/agendas/${userToLoggin}/contacts`,{
-				method: "GET",
-			})
-			if (response.statusText === "Not Found") {
-				alert(`User ${userToLoggin} not found in our data base, please register the user first.`);
-				setLogginUser("");
-			}
-			if (response.status === 200) alert(`Welcome ${userToLoggin}!`)
-			
-			console.log(response);
-			let data = await response.json();
-			console.log(data);
-			return;
-			
-		} catch (error) {
-			console.log(error);
-			return;
-		}
-	}}
+	
 
 	return (
 		<nav className="navbar navbar-light bg-light mb-3 px-3">
@@ -122,7 +135,7 @@ const Navbar = () => {
 								<input className="form-control mt-2" type="text" placeholder="User name" aria-label="default input example" value={inputValue} onChange={inputUpdaterHandler}/>
 							</div>
 							<div className="modal-footer">
-								<button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={logginUserHandler}>Loggin</button>
+								<button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={test}>Loggin</button>
 								<button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 							</div>
 						</div>
