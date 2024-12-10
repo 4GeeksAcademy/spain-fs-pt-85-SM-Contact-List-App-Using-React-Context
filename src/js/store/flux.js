@@ -1,3 +1,5 @@
+import { json } from "react-router";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -22,7 +24,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(response);
 					let data = await response.json();
 					console.log(data);
-					
+
 					return;
 				} catch (error) {
 					console.log(error);
@@ -40,13 +42,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 							alert(`User ${userToLoggin} not found in our data base, please register the user first.`);
 							setLogginUser("");
 						}
-						if (response.status === 200) alert(`Welcome ${userToLoggin}!`)
+						// if (response.status === 200) alert(`Welcome ${userToLoggin}!`)
 
 						console.log(response);
 						let data = await response.json();
 						console.log(data);
 						const store = getStore()
-						setStore({...store, contacts: data.contacts});
+						setStore({ ...store, contacts: data.contacts });
 						console.log("ESTO ES UN TEST");
 						return;
 
@@ -55,7 +57,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return;
 					}
 				}
-			}
+			},
+
+			// postNewContact: async (userToLoggin, contactObject) => {
+			// 	try {
+			// 		let response = await fetch(`https://playground.4geeks.com/contact/agendas/${userToLoggin}/contacts`, {
+			// 			method: POST,
+			// 			body: json.stringify({
+			// 				// "name": `${contactObject.name}`,
+			// 				// "phone": `${contactObject.phone}`,
+			// 				// "email": `${contactObject.email}`,
+			// 				// "address": `${contactObject.address}`
+			// 				"name": "test123",
+			// 				"phone": "test123",
+			// 				"email": "test123",
+			// 				"address": "test123"
+			// 			})
+			// 		})
+			// 		console.log(response);
+			// 		let data = response.json();
+			// 		console.log(data);
+			// 		return
+					
+			// 	} catch (error) {
+			// 		console.log(error);
+			// 		return;
+			// 	}
+			// }
 		}
 	};
 };
