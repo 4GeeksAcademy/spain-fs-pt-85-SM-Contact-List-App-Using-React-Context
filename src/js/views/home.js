@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, use } from "react";
 import "../../styles/home.css";
 import CardComponent from "../component/card-component.jsx";
 import { Context } from "../store/appContext.js";
@@ -35,34 +35,44 @@ import { Context } from "../store/appContext.js";
 
 const Home = () => {
 	const {store, actions} = useContext(Context);
+	const [textDisplayAfterLoggin, setTextDisplayAfterLoggin] = useState("")
+	const [textDisplayBeforeLoggin, setTextDisplayBeforeLoggin] = useState("")
 	const contactDetails = store.contacts;
-	const [cardInfo, setCardInfo] = useState([{
-		profilePicture:"https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/02/28/16460502314689.jpg",
-		name: "Paco",
-		direction:"una dirección",
-		contactNumber:"666666666",
-		contactEmail:"paco@gmail.com"
-	 }]);
-
-	// console.log(actions.logginViaApi(store.loggedUser));
+	const loggedUser = store.loggedUser;
 	
 	const cardInfoGenerator = contactDetails.map((contact, index) =>{
 		return	<CardComponent 
 		key={index}
-		profilePicture={contact.profilePicture}
+		// profilePicture={contact.profilePicture}
 		name={contact.name}
-		direction={contact.direction}
-		contactNumber={contact.contactNumber}
-		contactEmail={contact.contactEmail}
+		address={contact.address}
+		phone={contact.phone}
+		email={contact.email}
 		/>
 	});
 
-		
-		
+	useEffect(()=>{
+		if (loggedUser && contactDetails.length == 0) {
+			setTextDisplayAfterLoggin("d-flex justify-content-center fs-3 alert alert-success");
+			setTextDisplayBeforeLoggin("d-none");
+		}
+		else if (!loggedUser) {
+			setTextDisplayAfterLoggin("d-none");
+			setTextDisplayBeforeLoggin("d-flex justify-content-center fs-3 alert alert-warning");
+		}
+		else {
+			setTextDisplayAfterLoggin("d-none");
+			setTextDisplayBeforeLoggin("d-none");
+		}
+	}, [contactDetails]);
+
+
 
 	return (
 		<div>
 			{cardInfoGenerator}
+			<span className={textDisplayAfterLoggin}>Aún no has añadido ningún contacto, los contactos que agregues se mostrarán en esta página.</span> 
+			<span className={textDisplayBeforeLoggin}>Por favor, loguese para poder visualizar sus contactos.</span> 
 		</div>
 	);}
 
