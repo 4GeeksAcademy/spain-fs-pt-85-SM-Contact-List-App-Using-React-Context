@@ -43,7 +43,6 @@ const Home = () => {
 	const cardInfoGenerator = contactDetails.map((contact, index) =>{
 		return	<CardComponent 
 		key={index}
-		// profilePicture={contact.profilePicture}
 		name={contact.name}
 		address={contact.address}
 		phone={contact.phone}
@@ -72,7 +71,7 @@ const Home = () => {
 		<div>
 			{cardInfoGenerator}
 			<span className={textDisplayAfterLoggin}>Aún no has añadido ningún contacto, los contactos que agregues se mostrarán en esta página.</span> 
-			<span className={textDisplayBeforeLoggin}>Por favor, lóguese para poder visualizar sus contactos.</span> 
+			<span className={textDisplayBeforeLoggin}>Lóguese para poder visualizar sus contactos.</span> 
 		</div>
 	);}
 

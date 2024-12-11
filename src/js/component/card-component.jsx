@@ -18,8 +18,8 @@ const CardComponent = (props) => {
                     </div>
                 </div>
                 <div className="col-md-2 d-flex justify-content-start align-items-center">
-                    <span className="fa-solid fa-pencil mx-3" onClick={props.test}></span>
-                    <span className="fa-solid fa-trash mx-3"></span>
+                    <button className="btn btn-outline-dark border-0 fa-solid fa-pencil mx-3" onClick={props.test}></button>
+                    <button className="btn btn-outline-dark border-0 fa-solid fa-trash mx-3"></button>
                 </div>
             </div>
         </div>

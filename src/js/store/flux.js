@@ -59,31 +59,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			// postNewContact: async (userToLoggin, contactObject) => {
-			// 	try {
-			// 		let response = await fetch(`https://playground.4geeks.com/contact/agendas/${userToLoggin}/contacts`, {
-			// 			method: POST,
-			// 			body: json.stringify({
-			// 				// "name": `${contactObject.name}`,
-			// 				// "phone": `${contactObject.phone}`,
-			// 				// "email": `${contactObject.email}`,
-			// 				// "address": `${contactObject.address}`
-			// 				"name": "test123",
-			// 				"phone": "test123",
-			// 				"email": "test123",
-			// 				"address": "test123"
-			// 			})
-			// 		})
-			// 		console.log(response);
-			// 		let data = response.json();
-			// 		console.log(data);
-			// 		return
-					
-			// 	} catch (error) {
-			// 		console.log(error);
-			// 		return;
-			// 	}
-			// }
+			 postContactViaApi: async function postContactViaApi(loggedInUser, contactObject) {
+				try {
+					let response = await fetch(`https://playground.4geeks.com/contact/agendas/${loggedInUser}/contacts`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({
+							"name": contactObject.name,
+							"phone": contactObject.phone,
+							"email": contactObject.email,
+							"address": contactObject.address,
+						})
+					})
+					console.log(response);
+					let data = await response.json();
+					console.log(data);
+					this.logginViaApi(loggedInUser);
+					return;
+				} catch (error) {
+					console.log(error);
+					return;
+				}
+			}
 		}
 	};
 };

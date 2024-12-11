@@ -8,44 +8,36 @@ import "../../styles/demo.css";
 export const Demo = () => {
 	const { store, actions } = useContext(Context);
 	const navigate = useNavigate()
+	const [formValue, setFormValue] = useState({
+		"name": "",
+		"phone": "",
+		"email": "",
+		"address": ""
+	})
+	const [returnToHome, setReturnToHome] = useState(false)
+
+
+	function contactFormHandler(e) {
+		setFormValue({ ...formValue, [e.target.id]: e.target.value });
+		console.log(formValue);
+	}
 
 	async function infoHandler() {
-		// aqui cuando pulse el botón debería recibir la información que haya ingresado el usuario, la cual podría ser a través de hooks que se cree un objeto
-		// y luego como se ve a continuación se debería pasar a la función por un lado el objeto para que sea tratado y por otro el store.loggedUser para que postee la info.
-		postContactViaApi(loggedInUser, contactObject)
+		await actions.postContactViaApi(store.loggedUser, formValue, );
+		setReturnToHome(true)
 	}
-
-	async function postContactViaApi(){
-		try {
-			let response = await fetch(`https://playground.4geeks.com/contact/agendas/SMM/contacts`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({
-					"name": "test123",
-					"phone": "132123123",
-					"email": "test123@test@t",
-					"address": "test123",
-				})
-			})
-			console.log(response);
-			let data = await response.json();
-			console.log(data);
-			actions.logginViaApi(store.loggedUser);
-			console.log("llego antes del navigate");
-			
+	
+	useEffect(()=>{
+		console.log(returnToHome);
+		
+		if (returnToHome){
 			navigate("/");
-			console.log("llego despues del navigate");
-			return
-		} catch (error) {
-			console.log(error);
-			return;
-		}	
-	}
+			setReturnToHome(false)
+		}
+	}, [returnToHome])
 
 	// función para evitar el comportamiento normal del botón de tipo submit para que así no se recarque la página
-	async function noSubmit(e){
+	async function noSubmit(e) {
 		await e.preventDefault();
 		return false;
 	}
@@ -57,21 +49,21 @@ export const Demo = () => {
 			<form onSubmit={noSubmit} >
 				<div className="mb-3">
 					<label htmlFor="fullName" className="form-label">Full Name</label>
-					<input type="text" className="form-control" id="fullName" placeholder="Full Name"  />
+					<input type="text" className="form-control" id="name" value={formValue.name} onChange={contactFormHandler} placeholder="Full Name" />
 				</div>
 				<div className="mb-3">
 					<label htmlFor="inputEmail" className="form-label">Email</label>
-					<input type="email" className="form-control" id="inputEmail" placeholder="Email"  />
+					<input type="email" className="form-control" id="email" value={formValue.email} onChange={contactFormHandler} placeholder="Email" />
 				</div>
 				<div className="mb-3">
-					<label htmlFor="phoneAdress" className="form-label">Phone</label>
-					<input type="number" className="form-control" id="phoneAdress" placeholder="Phone"  />
+					<label htmlFor="phoneAddress" className="form-label">Phone</label>
+					<input type="number" className="form-control" id="phone" value={formValue.phone} onChange={contactFormHandler} placeholder="Phone" />
 				</div>
 				<div className="mb-3">
-					<label htmlFor="adress" className="form-label">Adress</label>
-					<input type="text" className="form-control" id="adress" placeholder="Adress"  />
+					<label htmlFor="address" className="form-label">Adress</label>
+					<input type="text" className="form-control" id="address" value={formValue.address} onChange={contactFormHandler} placeholder="Address" />
 				</div>
-				<button type="submit" className="btn btn-primary w-100" onClick={postContactViaApi}>Save</button>
+				<button type="submit" className="btn btn-primary w-100" onClick={infoHandler}>Save</button>
 			</form>
 
 
