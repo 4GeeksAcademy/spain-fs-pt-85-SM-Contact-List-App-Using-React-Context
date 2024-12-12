@@ -4,6 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			loggedUser: "",
+			loggedUserExist: false,
 			contacts: []
 		},
 		actions: {
@@ -11,6 +12,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				setStore({ ...store, loggedUser: newLoggedUser });
 				console.log(2, getStore().loggedUser);
+			},
+
+			logout: function logout(){
+				setStore({
+					loggedUser: "",
+					contacts: []
+				});
+				console.log("TEST");
+				
 			},
 
 			// función para la creación de usuario a través de la api
@@ -39,17 +49,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 							method: "GET",
 						})
 						if (response.statusText === "Not Found") {
+							await setStore({...store, loggedUser: ""});
 							alert(`User ${userToLoggin} not found in our data base, please register the user first.`);
-							setLogginUser("");
+							setStore({...store, loggedUserExist: false});
+							return;
 						}
 						// if (response.status === 200) alert(`Welcome ${userToLoggin}!`)
-
+						setStore({...store, loggedUserExist: true});
 						console.log(response);
 						let data = await response.json();
 						console.log(data);
 						const store = getStore()
 						setStore({ ...store, contacts: data.contacts });
-						console.log("ESTO ES UN TEST");
 						return;
 
 					} catch (error) {
@@ -81,6 +92,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.log(error);
 					return;
+				}
+			},
+			contactDeleter: async function(loggedInUser, contactToDelete){
+				console.log(contactToDelete.id)
+				try {
+					const response = await fetch(`https://playground.4geeks.com/contact/agendas/${loggedInUser}/contacts/${contactToDelete.id}`, {
+						method: "DELETE"
+					})
+					console.log(response);
+					const data = response.json();
+					console.log(data);
+					this.logginViaApi(loggedInUser);
+					return
+				} catch (error) {
+					console.log(error);
+					return
 				}
 			}
 		}
