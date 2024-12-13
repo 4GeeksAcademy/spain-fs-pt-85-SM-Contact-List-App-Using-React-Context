@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
-
 import "../../styles/demo.css";
 
+// TODO validación de que en phone solo se puedan ingresar números y que en email se deba ingresar un correo, como no es un dato requerido de momento se salta validaciones
+// hay que hacer con regex que full name sea un dato obligatorio
 
-export const Demo = () => {
+const Demo = () => {
 	const { store, actions } = useContext(Context);
 	const navigate = useNavigate()
 	const [formValue, setFormValue] = useState({
@@ -19,18 +20,15 @@ export const Demo = () => {
 
 	function contactFormHandler(e) {
 		setFormValue({ ...formValue, [e.target.id]: e.target.value });
-		console.log(formValue);
 	}
 
 	async function infoHandler() {
-		await actions.postContactViaApi(store.loggedUser, formValue, );
+		await actions.postContactViaApi(store.loggedUser, formValue,);
 		setReturnToHome(true)
 	}
-	
-	useEffect(()=>{
-		console.log(returnToHome);
-		
-		if (returnToHome){
+
+	useEffect(() => {
+		if (returnToHome) {
 			navigate("/");
 			setReturnToHome(false)
 		}
@@ -49,7 +47,7 @@ export const Demo = () => {
 			<form onSubmit={noSubmit} >
 				<div className="mb-3">
 					<label htmlFor="fullName" className="form-label">Full Name</label>
-					<input type="text" className="form-control" id="name" value={formValue.name} onChange={contactFormHandler} placeholder="Full Name" />
+					<input type="text" className="form-control" id="name" value={formValue.name} onChange={contactFormHandler} placeholder="Full Name" required />
 				</div>
 				<div className="mb-3">
 					<label htmlFor="inputEmail" className="form-label">Email</label>
@@ -76,3 +74,5 @@ export const Demo = () => {
 		</div>
 	);
 };
+
+export { Demo }

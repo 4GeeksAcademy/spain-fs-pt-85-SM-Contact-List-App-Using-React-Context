@@ -4,23 +4,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			loggedUser: "",
-			loggedUserExist: false,
+			editFormValue: {
+				"name": "",
+				"phone": "",
+				"email": "",
+				"address": ""
+			},
 			contacts: []
 		},
 		actions: {
 			setStore: (newLoggedUser) => {
 				const store = getStore();
 				setStore({ ...store, loggedUser: newLoggedUser });
-				console.log(2, getStore().loggedUser);
 			},
 
-			logout: function logout(){
+			logout: function logout() {
 				setStore({
 					loggedUser: "",
+					editFormValue: {},
 					contacts: []
 				});
-				console.log("TEST");
-				
+			},
+
+			prepareContactToEdit: async function prepareContactToEdit(contactToEditInfo) {
+				const store = getStore();
+				await setStore({ ...store, editFormValue: contactToEditInfo })
+				return;
 			},
 
 			// función para la creación de usuario a través de la api
@@ -30,6 +39,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						method: "POST",
 					})
 					if (response.status === 201) alert(`User ${userToCreate} created succesfully!`);
+					if (response.status === 400) alert(`User ${userToCreate} already exists`)
 					if (response.status === 405) alert(`Uh oh, we couldn't register the user ${userToCreate}`)
 					console.log(response);
 					let data = await response.json();
@@ -49,13 +59,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 							method: "GET",
 						})
 						if (response.statusText === "Not Found") {
-							await setStore({...store, loggedUser: ""});
+							await setStore({ ...store, loggedUser: "" });
 							alert(`User ${userToLoggin} not found in our data base, please register the user first.`);
-							setStore({...store, loggedUserExist: false});
+							setStore({ ...store, loggedUserExist: false });
 							return;
 						}
 						// if (response.status === 200) alert(`Welcome ${userToLoggin}!`)
-						setStore({...store, loggedUserExist: true});
+						setStore({ ...store, loggedUserExist: true });
 						console.log(response);
 						let data = await response.json();
 						console.log(data);
@@ -70,7 +80,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			 postContactViaApi: async function postContactViaApi(loggedInUser, contactObject) {
+			postContactViaApi: async function postContactViaApi(loggedInUser, contactObject) {
 				try {
 					let response = await fetch(`https://playground.4geeks.com/contact/agendas/${loggedInUser}/contacts`, {
 						method: "POST",
@@ -94,7 +104,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return;
 				}
 			},
-			contactDeleter: async function(loggedInUser, contactToDelete){
+			contactDeleter: async function (loggedInUser, contactToDelete) {
 				console.log(contactToDelete.id)
 				try {
 					const response = await fetch(`https://playground.4geeks.com/contact/agendas/${loggedInUser}/contacts/${contactToDelete.id}`, {
@@ -108,6 +118,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.log(error);
 					return
+				}
+			},
+
+
+			contactToEditHandler: async function contactToEditHandler(loggedInUser, contactToEdit){
+				try {
+					const response = await fetch (`https://playground.4geeks.com/contact/agendas/${loggedInUser}/contacts/${contactToEdit.id}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({
+							"name": contactToEdit.name,
+							"phone": contactToEdit.phone,
+							"email": contactToEdit.email,
+							"address": contactToEdit.address,
+						})
+					})
+					console.log(response);
+					const data = await response.json();
+					console.log(data);
+					this.logginViaApi(loggedInUser);
+					return;
+				} catch (error) {
+					console.log(error);
+					return;
 				}
 			}
 		}

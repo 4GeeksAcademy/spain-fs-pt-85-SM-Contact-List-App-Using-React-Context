@@ -8,6 +8,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 const Navbar = () => {
 	// degradación de objeto context
 	const {store, actions} = useContext(Context);
+	// función para navegar por páginas
 	const navigate = useNavigate();
 	// hook para los valores de los input
 	const [inputValue, setInputValue] = useState("");
@@ -41,11 +42,13 @@ const Navbar = () => {
 		setInputValue("");
 	}
 
+	// función para manejo de logout
 	function logoutUserHandler(){
 		actions.logout();
 		navigate("/")
 	}
 
+	// useEfect que comprueba si hay un usuario logado para modificar visibilidad de elementos HTML
 	useEffect(()=>{
 		if (!store.loggedUser) {
 			setLogoautVisibility("d-none");
