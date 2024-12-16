@@ -10,20 +10,31 @@ function EditModal() {
         "phone": "",
         "email": "",
         "address": ""
-    })
+    });
+    
 
     useEffect(() => {
         setFormValue(objetToEdit);
     }, [objetToEdit])
 
+    // función para llamar a la edición del contacto
     async function editHandler() {
-        await actions.contactToEditHandler(store.loggedUser, formValue);
+        if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formValue.email)) {
+            await actions.contactToEditHandler(store.loggedUser, formValue);
+            alert("Contacto editado");
+        }
+        else return;
     }
 
+    // función para que se actualicen los datos en el objeto
     function contactFormHandler(e) {
-        setFormValue({ ...formValue, [e.target.id]: e.target.value });
+        if (e.target.id === "phone" && /^\d+$/.test(e.target.value) || e.target.id !== "phone") {
+            setFormValue({ ...formValue, [e.target.id]: e.target.value });
+        }
+        else e.preventDefault()
     }
 
+    // función para evitar el funcionamiento normal del botón submit del formulario
     async function noSubmit(e) {
         await e.preventDefault();
         return false;
@@ -39,6 +50,7 @@ function EditModal() {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
+                        {/* inicio del formulario */}
                         <form onSubmit={noSubmit} >
                             <div className="mb-3">
                                 <label htmlFor="fullName" className="form-label">Full Name</label>
@@ -50,16 +62,16 @@ function EditModal() {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="phoneAddress" className="form-label">Phone</label>
-                                <input type="number" className="form-control" id="phone" value={formValue.phone} onChange={contactFormHandler} placeholder="Phone" />
+                                <input type="text" className="form-control" id="phone" value={formValue.phone} onChange={contactFormHandler} placeholder="Phone" />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="address" className="form-label">Adress</label>
                                 <input type="text" className="form-control" id="address" value={formValue.address} onChange={contactFormHandler} placeholder="Address" />
                             </div>
-                            <button type="submit" className="btn btn-primary w-100" onClick={editHandler} data-bs-dismiss="modal">Edit</button>
+                            <button type="submit" className="btn btn-primary w-100" onClick={editHandler}>Edit</button>
                         </form>
+                        {/* fin del formulario */}
                     </div>
-
                 </div>
             </div>
         </div>

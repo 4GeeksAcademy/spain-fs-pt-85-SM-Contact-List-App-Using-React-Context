@@ -13,19 +13,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 			contacts: []
 		},
 		actions: {
+			// función para guardar la variable de usuario logado
 			setStore: (newLoggedUser) => {
 				const store = getStore();
 				setStore({ ...store, loggedUser: newLoggedUser });
 			},
 
+			// función para devolver los valores ha su estado inicial
 			logout: function logout() {
 				setStore({
 					loggedUser: "",
-					editFormValue: {},
+					editFormValue: {
+						"name": "",
+						"phone": "",
+						"email": "",
+						"address": ""
+					},
 					contacts: []
 				});
 			},
 
+			// función para obtener la información específica del contacto a editer
 			prepareContactToEdit: async function prepareContactToEdit(contactToEditInfo) {
 				const store = getStore();
 				await setStore({ ...store, editFormValue: contactToEditInfo })
@@ -52,6 +60,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			// función para obtener la información de contactos del usuario a través de la API
 			logginViaApi: async function logginViaApi(userToLoggin) {
 				if (userToLoggin) {
 					try {
@@ -80,6 +89,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			// función para guardar el contacto creado a través de la API
 			postContactViaApi: async function postContactViaApi(loggedInUser, contactObject) {
 				try {
 					let response = await fetch(`https://playground.4geeks.com/contact/agendas/${loggedInUser}/contacts`, {
@@ -104,6 +114,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return;
 				}
 			},
+
+			// función para eliminar el contacto guardado via Api
 			contactDeleter: async function (loggedInUser, contactToDelete) {
 				console.log(contactToDelete.id)
 				try {
@@ -121,10 +133,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-
-			contactToEditHandler: async function contactToEditHandler(loggedInUser, contactToEdit){
+			// función para actualizar el contacto a través de la API
+			contactToEditHandler: async function contactToEditHandler(loggedInUser, contactToEdit) {
 				try {
-					const response = await fetch (`https://playground.4geeks.com/contact/agendas/${loggedInUser}/contacts/${contactToEdit.id}`, {
+					const response = await fetch(`https://playground.4geeks.com/contact/agendas/${loggedInUser}/contacts/${contactToEdit.id}`, {
 						method: "PUT",
 						headers: {
 							"Content-Type": "application/json"

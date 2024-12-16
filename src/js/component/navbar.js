@@ -2,9 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-// TODO HACER QUE NAVBAR DESAPAREZCA CUANDO SE ESTÁ EN CUALQUIER PÁGINA QUE NO SEA HOME, se debe modificar el return de la función logginViaApi para que devuelva información
-// la cual podrá ser tratada por home para generar los contactos
-
 const Navbar = () => {
 	// degradación de objeto context
 	const {store, actions} = useContext(Context);
@@ -90,9 +87,7 @@ const Navbar = () => {
 						</div>
 					</div>
 				</div>
-
-
-
+				{/* fin modal register */}
 				{/* <!-- Button trigger modal loggin --> */}
 				<button type="button" className={`btn btn-warning me-3 ${logRegisterVisibility}`} data-bs-toggle="modal" data-bs-target="#logginModal">
 					Loggin
@@ -116,8 +111,7 @@ const Navbar = () => {
 						</div>
 					</div>
 				</div>
-
-
+				{/* fin modal loggin */}
 				{/* <!-- Button trigger modal logout --> */}
 				<button type="button" className={`btn btn-danger me-3 ${loggoutVisibility}`} data-bs-toggle="modal" data-bs-target="#logoutModal">
 					Logout
@@ -137,17 +131,18 @@ const Navbar = () => {
 						</div>
 					</div>
 				</div>
-
-
+				{/* fin modal logout */}
 			</div>
-
+			{/* texto de bienvenida al usuario logado visible en página principal */}
 			<div className={`fw-semibold fs-4 ${loggoutVisibility} ${notDemoPage ? "" : "d-none"}`}>Welcome {store.loggedUser}</div>
-
+			{/* fin texto de bienvenida al usuario logado visible en página principal */}
+			{/* botón para añadir nuevo contacto */}
 			<div className={`ml-auto`}>
 				<Link to="/demo">
 					<button className={`btn btn-primary ${addNewContactVisibility} ${notDemoPage ? "" : "d-none"}`}>Add new contact</button>
 				</Link>
 			</div>
+			{/* fin del botón para añadir nuevo contacto */}
 		</nav>
 	);
 };

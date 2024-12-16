@@ -17,7 +17,7 @@ const Home = () => {
 	const loggedUser = store.loggedUser;
 	// hook para almacenar el usuario a eliminar
 	const [contactToDelete, setContactToDelete] = useState({});
-	
+	// constante para generar las cartas de contacto
 	const cardInfoGenerator = contactDetails.map((contact) =>{
 		return	<CardComponent 
 		key={contact.id}
@@ -30,19 +30,22 @@ const Home = () => {
 		/>
 	});
 
+	// función para la obtención de datos del contacto que podría ser eliminado
 	function prepareInfoOfContactToDelete(contactThatMightBeDeleted){
 		setContactToDelete(contactThatMightBeDeleted)	
 	}
 
+	// función para la obtención de datos del contacto que podría ser editado
 	async function prepareInfoOfContactToEdit(contactThatMightBeEdited){
 		await actions.prepareContactToEdit(contactThatMightBeEdited)
 	}
 
-	// actions.contactDeleter(loggedUser, contactToDelete)
+	// función para llamar a la api y eliminar el contacto
 	async function deleteHandler(){
 		await actions.contactDeleter(loggedUser, contactToDelete)
 	}
 
+	// maneno de visibilidad de elementos html
 	useEffect(()=>{
 		if (loggedUser && contactDetails.length == 0) {
 			setTextDisplayAfterLoggin("d-flex justify-content-center fs-3 alert alert-success");
